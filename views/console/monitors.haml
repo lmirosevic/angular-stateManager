@@ -1,0 +1,9 @@
+.page
+	%h2 monitors
+
+	%div{:"ng-controller" => "MonitorsCtrl"}
+		%a{:href => "", :"ng-click" => "showMode('view')"} View
+		%a{:href => "", :"ng-click" => "showMode('edit')"} Edit
+		
+		%hr
+		.include{:"ng-include" => "monitorsContent"}
