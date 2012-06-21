@@ -38,7 +38,16 @@ angular.module("cloudpulse.services", [])
 				}
 			}
 
+			this.replaceState = function(modifiedPathComponents) {
+				location.path("/"+mergePathComponents(modifiedPathComponents).join("/")).replace();
+			}
+
 			this.pushState = function(modifiedPathComponents) {
+				location.path("/"+mergePathComponents(modifiedPathComponents).join("/"));
+			}
+
+			/* utils */
+			function mergePathComponents(modifiedPathComponents) {
 				//merge the changes into a new array
 				var currentPathComponents = getProperPathComponents();
 				var newPathComponents = new Array();
@@ -50,11 +59,9 @@ angular.module("cloudpulse.services", [])
 					}
 				}
 
-				//set the url bar
-				location.path("/"+newPathComponents.join("/"));
+				return newPathComponents;
 			}
 
-			/* utils */
 			function getProperPathComponents() {
 				return location.path().substring(1).split("/");
 			}

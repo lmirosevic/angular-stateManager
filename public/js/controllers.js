@@ -12,11 +12,23 @@ function RootCtrl($scope, stateManager) {
 }
 
 function ConsoleCtrl($scope, stateManager) {
+	// stateManager.registerInitialiser(
+	// 	[0],
+	// 	function stateChanged(pathComponents) {
+	// 		modifyContent(pathComponents[0]);
+	// 	},
+	// 	function default() {
+	// 		modifyContent("services");
+	// 		stateManager.replaceState(["services"]);
+	// 	}
+	// )($scope)
+	
 	stateManager.registerInitialiser(function(pathComponents) {
 		if (pathComponents[0]) {
 			modifyContent(pathComponents[0]);
 		} else {
 			modifyContent("services");
+			stateManager.replaceState(["services"]);
 		}
 	})($scope)
 
@@ -39,6 +51,7 @@ function MonitorsCtrl($scope, stateManager) {
 		}
 		else {
 			modifyContent("default");
+			stateManager.replaceState([null, "default"]);
 		}
 	})($scope)
 
