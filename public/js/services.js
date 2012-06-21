@@ -2,65 +2,46 @@
 
 angular.module("cloudpulse.services", [])
 	.factory("stateManager", ["$rootScope", "$location", function factory(rootScope, location) {
-
 		//define the StateManager object
 		function StateManager() {
-
-			// var initialiserStack = new Array();
-			var initialisers = new Object();
-			var currentState = new String();
+			var initialiserStack = new Array();
 			var fresh = true;//sentinel to signify first load
 
-			// this.registerRootInitialiser = function(rootInitialiser) {
-			// 	// console.log("init rootInitialiser, this shud happen when the page has first loaded to enable deep linking");
-			// 	// rootInitialiser(getAssembledPayload());
-
-			// 	//register state change event and give it the rootInitialiser
-			// 	// window.onhashchange = function() {
-			// 	// 	rootInitialiser(getAssembledPayload());
-			// 	// }
-			// }
-
 			this.registerInitialiser = function(initialiser) {
-				//check if its the first time
+				//if its the first time, register the onhashchange event
 				if (fresh) {
-					// console.log("register event on: "+initialiser);
-
 					//register state change event and give it the root initialiser
 					window.onhashchange = function() {
-						console.log("state changed");
-						//go through whole stack, and then clear stack
-						// for (var i in initialiserStack) {
-						// 	// console.log("tick");
-
-						// 	initialiserStack[i](getAssembledPayload());
-						// }
-
-						// initialiserStack.length = 0;
-
-						rootInitialiser(getAssembledPayload());
-
+						//trigger update cascade
+						for (var i in initialiserStack) {
+							initialiserStack[i](getProperPathComponents());
+						}
 						rootScope.$apply();
-					}
-
-					rootInitialiser = initialiser;
-					
+					}					
 					fresh = false;
 				}
 
-				//initialise because the controller was just loaded
-				initialiser(getAssembledPayload());
+				//initialise the controller by calling its constructor, because the controller was just loaded
+				initialiser(getProperPathComponents());
 
-				//add it to the stack so it can reinitialised in case the state changes
-				// initialiserStack.push(initialiser);
+				//add it to the stack so it can reinitialised in case the state changes in the future due to onhashchange
+				initialiserStack.push(initialiser);
+
+				//return a function to the controller that it should execute immediately; it will make that controller report back to the statemanager when its destroyed so that we can free up memory
+				return function(ctrlScope) {
+					ctrlScope.$on("$destroy", function() {
+						var index = initialiserStack.indexOf(initialiser);
+						if (index != -1) {
+							initialiserStack.splice(index, 1);
+						}
+					})
+				}
 			}
 
 			this.pushState = function(modifiedPathComponents) {
-				var currentPathComponents = getAssembledPayload();
-
-				var newPathComponents = new Array();
-
 				//merge the changes into a new array
+				var currentPathComponents = getProperPathComponents();
+				var newPathComponents = new Array();
 				for (var i in modifiedPathComponents) {
 					if (modifiedPathComponents[i]) {
 						newPathComponents[i] = modifiedPathComponents[i];
@@ -74,8 +55,7 @@ angular.module("cloudpulse.services", [])
 			}
 
 			/* utils */
-
-			function getAssembledPayload() {
+			function getProperPathComponents() {
 				return location.path().substring(1).split("/");
 			}
 		}
