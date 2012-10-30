@@ -22,7 +22,15 @@
 		%script{:src => "/js/directives.js"}
 
 	%body.page{:"ng-controller" => "ConsoleCtrl"}
-		%h1 console page
+		%h1
+			%span console 
+			%a{:href => "", :"ng-click" => "bearFrozenStacks()"} (initialiserStack)
+			%a{:href => "", :"ng-click" => "bearSpace()"} (space)
+			%a{:href => "", :"ng-click" => "bearInit(0)"} (0)
+			%a{:href => "", :"ng-click" => "bearInit(1)"} (1)
+			%a{:href => "", :"ng-click" => "bearInit(2)"} (2)
+			%a{:href => "", :"ng-click" => "bearInit(3)"} (3)
+
 
 		-#.main-container{:"ng-controller" => "ConsoleCtrl"}
 		.main-container
