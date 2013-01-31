@@ -3,10 +3,14 @@ Angular-stateManager
 
 A simple state manager implementation for Angular.js which enables nested views, the browser back button, proper history, and deep linking.
 
-High level overview
+Wordy intro
 ------------
 
-This state manager allows your app to transition to different states as the result of user actions, and conceptually links these states to different URLs in the app. The state itself is encoded in the URL, there are no objects or variables that the state manager maintains or lets your write to. This follows the philosophy of the web in the sense that a URL should be enough to describe the state of an app. Consequently when your app does something significant, e.g. you go from say the "Inbox" to the "Sent" folder (in say a webmail client) your App's URL will change from www.mymailapp.com/inbox to www.mymailapp.com/sent. If the user then decides to go back to the Inbox, the URL will change back to www.mymailapp.com/inbox and this should be enough for your app to be able to restore the state of the inbox. This is a contrived example and the user will probably be in a deeper nested url structure like www.mymail.com/inbox/message/123/edit, and this is where this state manager comes in handy in that it lets each controller in the stack (root > inbox > message > edit) initialise itself according to the state represented by the URL. So the root controller will load the inbox subview/controller pair. The inbox controller will load the message. And the message will load the editor. This can happen asynchronously, i.e. the full stack is never known to any one controller, and each controller just has to worry about itself and its subviews. The subviews worry about themselves, and their subviews worry about themselves, etc. The state manager makes sure that each controller is initialised properly to reflect the state.
+This state manager allows your app to transition to different states as the result of user actions, and conceptually links these states to different URLs in the app. The state itself is encoded in the URL, there are no objects or variables that the state manager maintains or lets your write to. 
+
+This follows the philosophy of the web in the sense that a URL should be enough to describe the state of an app. Consequently when your app does something significant, e.g. you go from say the "Inbox" to the "Sent" folder (in say a webmail client) your App's URL will change from www.mymailapp.com/inbox to www.mymailapp.com/sent. If the user then decides to go back to the Inbox, the URL will change back to www.mymailapp.com/inbox and this should be enough for your app to be able to restore the state of the inbox. This is a contrived example and the user will probably be in a deeper nested url structure like www.mymail.com/inbox/message/123/edit.
+
+This is where this state manager comes in handy in that it lets each controller in the stack (root > inbox > message > edit) initialise itself according to the state represented by the URL. So the root controller will load the inbox subview/controller pair. The inbox controller will load the message. And the message will load the editor. This can happen asynchronously, i.e. the full stack is never known to any one controller, and each controller just has to worry about itself and its subviews. The subviews worry about themselves, and their subviews worry about themselves, etc. The state manager makes sure that each controller is initialised properly to reflect the current state once it is ready.
 
 Sounds complicated but all you have to do is write an initialiser function in your controller which will get called when the URL (=state) changes. That's it. The state manager takes care of when to call the initialiser, and when to destroy the controller. If as a result of your initialisation function another (sub-)controller gets loaded after the fact, then as long as this sub-controller implements his own initialiser, the state manager will call his initialiser function once he's loaded. This is all asynchronous and each controller just has to worry about itself, resting safe in the knowledge that it can change the controller hierarchy and all will be well (by either adding a new controller, or replacing an old one, through say `ng-include` or by manually inserting a compiled element containing the `ng-controller` directive into the DOM).
 
@@ -15,7 +19,7 @@ Usage
 
 This walkthrough uses an "Animals" theme with dogs and cats.
 
-Assuming you have a module called `Animals`, add the stateManager factory method to it:
+Assuming you have a module called `Animals`, add the `stateManager` factory method to it:
 
 ```javascript
 angular.module("Animals.services", [])
