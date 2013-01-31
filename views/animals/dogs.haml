@@ -1,0 +1,12 @@
+.dogs{:style => "border: 4px solid orange"}
+	%h2 Dogs
+
+	%div{:"ng-controller" => "DogsCtrl"}
+		%p This is the dogs view, it has an orange border. It also has a subview which can include other views. Click a dog below to load a specific dog's view into the subview to this view. The Husky is loaded by default by the DogsCtrl.
+
+		%a{:href => "", :"ng-click" => "showDog('husky')"} Husky
+		%a{:href => "", :"ng-click" => "showDog('german-shepherd')"} German Shepherd
+		%a{:href => "", :"ng-click" => "showDog('labrador')"} Labrador
+
+		%hr
+		.include{:"ng-include" => "dogsContent"}

@@ -1,182 +1,98 @@
 // controllers.js
 
 function RootCtrl($scope, stateManager) {
-	console.log("root");
-	stateManager.registerInitialiser(function rootz(pathComponents) {
+	stateManager.registerInitialiser(function (pathComponents) {
 		console.log("root INIT");
 	})($scope, "root")
 
 	$scope.setTitle = function(title) {
-		// $scope.htmlTitle = title + " - Cloudpulse";
-		$("title").text(title + " - Cloudpulse");
-	}
-
-	$scope.bearSpace = function() {
-		console.log("\n");
+		$("title").text(title + " - GBStateManager");
 	}
 }
 
-function ConsoleCtrl($scope, stateManager, $location) {
-	console.log("console");
-	//this is an attempt to structure the initialiser a little more, and abstract even more away
-	//use this one and never let the top one modify the url
+function AnimalsCtrl($scope, stateManager, $location) {
+	stateManager.registerInitialiser(function (pathComponents) {
+		console.log("Animals INIT");
 
-	//otherwise, store a separate stack for each url
-
-	// stateManager.registerInitialiser(
-	// 	[0],
-	// 	function stateChanged(pathComponents) {
-	// 		modifyContent(pathComponents[0]);
-	// 	},
-	// 	function default() {
-	// 		modifyContent("services");
-	// 		stateManager.replaceState(["services"]);
-	// 	}
-	// )($scope)
-
-	stateManager.registerInitialiser(function consolez(pathComponents) {
-		console.log("console INIT");
-
+		//if the url contains a component at position 0, then load that page
 		if (pathComponents[0]) {
 			modifyContent(pathComponents[0]);
-		} else {
-			modifyContent("services");
-			stateManager.replaceState(["services"]);
+		}
+		//otherwise if its fresh dont do anything
+		else {
+			//uncomment the following two lines to add some default behaviour when the url component is not set to anything
+
+			// modifyContent("cats");
+			// stateManager.replaceState(["cats"]);
 		}		
 
-		// if (fresh) {
-		// 	modifyContent("services");
-		// 	stateManager.replaceState(["services"]);
+		$scope.setTitle("Animals");
+	})($scope)
 
-		// }
-		// else {
-		// 	modifyContent(pathComponents[0]);
-		// }
-		$scope.setTitle("Console");
-	})($scope, "console")
-
-	// stateManager.registerInitialiser(function(pathComponents) {
-	// 	console.log("console INIT");
-
-	// 	if (pathComponents[0]) {
-	// 		modifyContent(pathComponents[0]);
-	// 	} else {
-	// 		modifyContent("services");
-	// 		stateManager.replaceState(["services"]);
-	// 	}
-	// })($scope, "console")
-
-	// $scope.bearSetTitle = function(title) {
-	// 	$("title").text(title);
-	// }
-
-	// $scope.bearSetPath  = function(page) {
-	// 	$location.path("/"+page);
-	// }
-
-	// $scope.bearTitleThenPath = function(param) {
-	// 	$("title").text(param);
-	// 	$location.path("/"+param);		
-	// }
-
-	// $scope.bearPathThenTitle = function(param) {
-	// 	$location.path("/"+param);
-	// 	// $("title").text(param);
-
-	// }
-
-	$scope.showPage = function(page) {
-		stateManager.pushState([page]);
-		modifyContent(page);
+	//loads a new animal by 1)pushing a new piece of state onto the statemanager, and 2)loading the content
+	$scope.showAnimal = function(animal) {
+		stateManager.pushState([animal]);
+		modifyContent(animal);
 	}
 
-	/* utils */
+	//utility function to abstract away loading of a page inside angular
 	function modifyContent(page) {
-		//foo hack, need to defer execution until the service is finished	
-		// setTimeout(function() {
-		// 	$scope.setTitle(page);
-		// }, 100);
-
-		$scope.consoleContent = "/partials/console/"+page;
+		$scope.animalsContent = "/partials/animals/"+page;
 	}
 }
 
-function MonitorsCtrl($scope, stateManager) {
-	console.log("monitors");
-	stateManager.registerInitialiser(function monitorz(pathComponents) {
-		console.log("monitors INIT: "+pathComponents.join("/"));
-		// console.log(pathComponents)
+function DogsCtrl($scope, stateManager) {
+	stateManager.registerInitialiser(function (pathComponents) {
+		console.log("Dogs INIT");
+
+		//if a specific dog is set in the url, then just load that view in
 		if (pathComponents[1]) {
 			modifyContent(pathComponents[1]);
 		}
+		//if nothing is set, then load the husky by default, but we are now changing state programatically (from "nothing" to "husky") so we need to tell the statemanager to record it
 		else {
-			modifyContent("default");
-			stateManager.replaceState([null, "default"]);
+			modifyContent("husky");
+			stateManager.replaceState([null, "husky"]);
 		}
 
-		$scope.setTitle("Monitors");
-	})($scope, "monitors")
+		$scope.setTitle("Dogs");
+	})($scope)
 
-
-	// stateManager.registerInitialiser(function(pathComponents) {
-	// 	console.log("monitors INIT");
-	// 	if (pathComponents[1]) {
-	// 		modifyContent(pathComponents[1]);
-	// 	}
-	// 	else {
-	// 		modifyContent("default");
-	// 		stateManager.replaceState([null, "default"]);
-	// 	}
-	// })($scope, "monitors")
-
-	$scope.showMode = function(mode) {
-		stateManager.pushState([null, mode]);
-		modifyContent(mode);
+	$scope.showDog = function(dog) {
+		stateManager.pushState([null, dog]);
+		modifyContent(dog);
 	}
 
 	/* utils */
-	function modifyContent(mode) {
-		// setTimeout(function() {
-		// 	$scope.setTitle(mode);
-		// }, 100);
-
-		$scope.monitorsContent = "/partials/console/monitors/"+mode;
+	function modifyContent(dog) {
+		$scope.dogsContent = "/partials/animals/dogs/"+dog;
 	}
 }
 
-function ViewCtrl($scope, stateManager) {
-	console.log("view");
-	stateManager.registerInitialiser(function viewz(pathComponents) {
-		console.log("view INIT");
-		$scope.setTitle("View");
-	})($scope, "view")
-
+function HuskyCtrl($scope, stateManager) {
+	stateManager.registerInitialiser(function (pathComponents) {
+		console.log("Husky INIT");
+		$scope.setTitle("Husky");
+	})($scope)
 }
 
-function EditCtrl($scope, stateManager) {
-	console.log("edit");
-	stateManager.registerInitialiser(function editz(pathComponents) {
-		console.log("edit INIT");
-		//todo
-		$scope.setTitle("Edit");
-	})($scope, "edit")
-
+function GermanShepherdCtrl($scope, stateManager) {
+	stateManager.registerInitialiser(function (pathComponents) {
+		console.log("German Shepherd INIT");
+		$scope.setTitle("German Shepherd");
+	})($scope)
 }
 
-function DefaultCtrl($scope, stateManager) {
-	console.log("default");
-	stateManager.registerInitialiser(function defaultz(pathComponents) {
-		console.log("default INIT");
-		$scope.setTitle("Default");
-		//todo
-	})($scope, "default")
+function LabradorCtrl($scope, stateManager) {
+	stateManager.registerInitialiser(function (pathComponents) {
+		console.log("Labrador INIT");
+		$scope.setTitle("Labrador");
+	})($scope)
 }
 
-function ServicesCtrl($scope, stateManager) {
-	console.log("services");
-	stateManager.registerInitialiser(function servicez(pathComponents) {
-		console.log("services INIT");
-		$scope.setTitle("Services");
-		//todo
-	})($scope, "services")
+function CatsCtrl($scope, stateManager) {
+	stateManager.registerInitialiser(function (pathComponents) {
+		console.log("Cats INIT");
+		$scope.setTitle("Cats");
+	})($scope)
 }

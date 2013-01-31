@@ -1,14 +1,16 @@
 require 'sinatra'
 require 'haml'
 
-get "/partials/console/:page" do
-	haml :"/console/#{params['page']}"
+#this just exposes a url through which to serve the view contents
+get "/partials/animals/:animal" do
+	haml :"/animals/#{params['animal']}"
 end
 
-get "/partials/console/monitors/:mode" do
-	haml :"/console/monitors/#{params['mode']}"
+get "/partials/animals/dogs/:dog" do
+	haml :"/animals/dogs/#{params['dog']}"
 end
 
+#routes all the rest to the same file
 get "*" do
-	haml :console
+	haml :animals
 end

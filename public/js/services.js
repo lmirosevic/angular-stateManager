@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("cloudpulse.services", [])
+angular.module("Animals.services", [])
 	.factory("stateManager", ["$rootScope", "$location", function factory(rootScope, location) {
 		//define the StateManager object
 		function StateManager() {
