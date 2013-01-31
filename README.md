@@ -98,7 +98,7 @@ gem install haml
 To run the demo on your computer:
 
 ```sh
-ruby GBAngularStateManager_Demo.rb
+ruby demo.rb
 ```
 
 Dependencies
