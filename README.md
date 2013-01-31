@@ -1,4 +1,4 @@
-GBAngularStateManager
+Angular-stateManager
 ============
 
 A simple state manager implementation for Angular.js which enables nested views, the browser back button, proper history, and deep linking.
