@@ -3,6 +3,11 @@ Angular-stateManager
 
 A simple state manager implementation for Angular.js which enables nested views, the browser back button, proper history, and deep linking.
 
+Online Demo
+------------
+
+http://angular-statemanager-demo.herokuapp.com
+
 Wordy intro
 ------------
 
@@ -74,7 +79,7 @@ angular.module("Animals", ["Animals.services"])
 	});
 ```
 
-Demo
+Local demo
 ------------
 
 Make sure you have `ruby` and the following gems installs:
