@@ -3,7 +3,7 @@
 	%head
 		%meta{:charset => "utf-8"}
 		
-		%title GBStateManager Demo
+		%title GBAngularStateManager Demo
 
 		:css
 			a {
@@ -11,12 +11,10 @@
 			}
 
 		%script{:src => "/lib/jquery/jquery-1.7.2.min.js"}
-		%script{:src => "/lib/jquery/jquery-ui-1.8.18.min.js"}
 		%script{:src => "/lib/angular/angular-1.0.0rc10.min.js"}
 		%script{:src => "/js/app.js"}
 		%script{:src => "/js/services.js"}
 		%script{:src => "/js/controllers.js"}
-		%script{:src => "/js/directives.js"}
 
 	%body
 		.animals{:"ng-controller" => "AnimalsCtrl", :style => "border: 4px solid red"}
@@ -27,7 +25,7 @@
 
 			%p Once you've click around a little, try using your browser arrows. Then try refreshing the page (or copy pasting the current url into another browser).
 
-			%a{:href => "", :"ng-click" => "showAnimal('dogs')"} Dogs
 			%a{:href => "", :"ng-click" => "showAnimal('cats')"} Cats
+			%a{:href => "", :"ng-click" => "showAnimal('dogs')"} Dogs
 
 			.include{:"ng-include" => "animalsContent"}

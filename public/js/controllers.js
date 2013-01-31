@@ -3,10 +3,10 @@
 function RootCtrl($scope, stateManager) {
 	stateManager.registerInitialiser(function (pathComponents) {
 		console.log("root INIT");
-	})($scope, "root")
+	})($scope);
 
 	$scope.setTitle = function(title) {
-		$("title").text(title + " - GBStateManager");
+		$("title").text(title + " - GBAngularStateManager");
 	}
 }
 
@@ -27,7 +27,7 @@ function AnimalsCtrl($scope, stateManager, $location) {
 		}		
 
 		$scope.setTitle("Animals");
-	})($scope)
+	})($scope);
 
 	//loads a new animal by 1)pushing a new piece of state onto the statemanager, and 2)loading the content
 	$scope.showAnimal = function(animal) {
@@ -41,7 +41,7 @@ function AnimalsCtrl($scope, stateManager, $location) {
 	}
 }
 
-function DogsCtrl($scope, stateManager) {
+function DogsCtrl($scope, stateManager, $location) {
 	stateManager.registerInitialiser(function (pathComponents) {
 		console.log("Dogs INIT");
 
@@ -56,7 +56,7 @@ function DogsCtrl($scope, stateManager) {
 		}
 
 		$scope.setTitle("Dogs");
-	})($scope)
+	})($scope);
 
 	$scope.showDog = function(dog) {
 		stateManager.pushState([null, dog]);
@@ -73,26 +73,26 @@ function HuskyCtrl($scope, stateManager) {
 	stateManager.registerInitialiser(function (pathComponents) {
 		console.log("Husky INIT");
 		$scope.setTitle("Husky");
-	})($scope)
+	})($scope);
 }
 
 function GermanShepherdCtrl($scope, stateManager) {
 	stateManager.registerInitialiser(function (pathComponents) {
 		console.log("German Shepherd INIT");
 		$scope.setTitle("German Shepherd");
-	})($scope)
+	})($scope);
 }
 
 function LabradorCtrl($scope, stateManager) {
 	stateManager.registerInitialiser(function (pathComponents) {
 		console.log("Labrador INIT");
 		$scope.setTitle("Labrador");
-	})($scope)
+	})($scope);
 }
 
 function CatsCtrl($scope, stateManager) {
 	stateManager.registerInitialiser(function (pathComponents) {
 		console.log("Cats INIT");
 		$scope.setTitle("Cats");
-	})($scope)
+	})($scope);
 }

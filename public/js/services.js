@@ -6,30 +6,15 @@ angular.module("Animals.services", [])
 		function StateManager() {
 			var initialiserStack = new Array();
 
-			window.onhashchange = function(event) {
-				//freeze stack
-				var frozenStack = new Array();
-				for (var i in initialiserStack) {
-					frozenStack[i] = initialiserStack[i];
+			//register handler to detect when URL changes. try to use onpopstate, and fallback to onhashchange
+			if (history && history.pushState) {
+				window.onpopstate = function(event) {
+					respondToStateChange(event);
 				}
-
-				//initialise the stack discrepancy as the length of the array, we should stop there anyway and we need a way to detect when it trickles down
-				var stackDiscrepancyIndex = initialiserStack.length;
-
-				//run each initialiser, but break out when the stack changes
-				for (var i in initialiserStack) {
-					//detect if the initialiser that is about the be executed has been replaced, in which case we can assume the controller stack from this point on is fresh and has already been initialised so we don't need to continue
-					var newStackDiscrepancyIndex = detectStackDiscrepancy(frozenStack, initialiserStack);
-					if (newStackDiscrepancyIndex != -1) {//-1 signifies no discrepancy
-						var stackDiscrepancyIndex = newStackDiscrepancyIndex < stackDiscrepancyIndex ? newStackDiscrepancyIndex : stackDiscrepancyIndex;
-						if (i >= stackDiscrepancyIndex) {
-							break;
-						}
-					}
-
-					//run initialiser
-					initialiserStack[i](getProperPathComponents());
-					rootScope.$apply();
+			}
+			else {
+				window.onhashchange = function(event) {
+					respondToStateChange(event);
 				}
 			}
 
@@ -62,6 +47,33 @@ angular.module("Animals.services", [])
 			}
 
 			/* utils */
+			function respondToStateChange(event) {
+				//freeze stack
+				var frozenStack = new Array();
+				for (var i in initialiserStack) {
+					frozenStack[i] = initialiserStack[i];
+				}
+
+				//initialise the stack discrepancy as the length of the array, we should stop there anyway and we need a way to detect when it trickles down
+				var stackDiscrepancyIndex = initialiserStack.length;
+
+				//run each initialiser, but break out when the stack changes
+				for (var i in initialiserStack) {
+					//detect if the initialiser that is about the be executed has been replaced, in which case we can assume the controller stack from this point on is fresh and has already been initialised so we don't need to continue
+					var newStackDiscrepancyIndex = detectStackDiscrepancy(frozenStack, initialiserStack);
+					if (newStackDiscrepancyIndex != -1) {//-1 signifies no discrepancy
+						var stackDiscrepancyIndex = newStackDiscrepancyIndex < stackDiscrepancyIndex ? newStackDiscrepancyIndex : stackDiscrepancyIndex;
+						if (i >= stackDiscrepancyIndex) {
+							break;
+						}
+					}
+
+					//run initialiser
+					initialiserStack[i](getProperPathComponents());
+					rootScope.$apply();
+				}
+			}
+
 			function detectStackDiscrepancy(stackA, stackB) {
 				var stackDiscrepancyIndex = -1;
 				for (var i in stackB) {
