@@ -3,7 +3,7 @@ Angular-stateManager
 
 A simple state manager implementation for Angular.js which enables nested views, the browser back button, proper history, and deep linking.
 
-Demo
+Live demo
 ------------
 
 http://angular-statemanager-demo.herokuapp.com
@@ -24,19 +24,16 @@ Usage
 
 This walkthrough uses an "Animals" theme with dogs and cats.
 
-Assuming you have a module called `Animals`, add the `stateManager` factory method to it:
+The state manager itself comes as a module inside `stateManager.js` the which you just link to in your main html file:
 
-```javascript
-angular.module("Animals.services", [])
-	.factory("stateManager", ["$rootScope", "$location", function factory(rootScope, location) {
-		//... This is the code for the GBAngularStateManager
-	}])
+```html
+<script src='/js/stateManager.js'></script>
 ```
 
-Make sure the module is registered with your app:
+And then add a dependency to in your app (assuming your app is called "Animals"):
 
-```javascript
-angular.module("Animals", ["Animals.services"])
+```javscript
+angular.module("Animals", ["stateManager"])
 ```
 
 Then in your controllers provide the state manager with an initialiser which it can call when the state changes. `pathComponents` is an array of path components so `http://www.google.com/some/path/on/the/root/domain` would pass in `["some", "path", "on", "the", "root", "domain"]`. The state manager returns a function which you must call with the $scope as the first parameter:
@@ -44,9 +41,8 @@ Then in your controllers provide the state manager with an initialiser which it 
 ```javascript
 function HuskyCtrl($scope, stateManager) {
 	stateManager.registerInitialiser(function (pathComponents) {
-		//Do whatever you like here to respond to state changes
-
-		//You can even load in new subviews via ng-include and if they have an ng-controller directive, that new controller's initialiser will also get called once it gets loaded.
+		//Do whatever you like here to respond to state changes: load subviews via ng-include, load content via AJAX, whatever...
+		//If you load in new subviews via ng-include and if doing so causes an ng-controller directive to be compiled, that new controller's initialiser will also get called once it's loaded.
 	})($scope);
 }
 ```
@@ -72,7 +68,7 @@ stateManager.replaceState(["some", "other", "path", "which", "is", "even", "deep
 The state manager uses the angular $location service, so you can configure it to use hashbang or HTML5 style URLs:
 
 ```javascript
-angular.module("Animals", ["Animals.services"])
+angular.module("Animals", ["stateManager"])
 	.config(function($locationProvider) {
 		// $locationProvider.html5Mode(false).hashPrefix('!');	//turn html5 mode off
 		$locationProvider.html5Mode(true);					//turn html5 mode on
@@ -109,10 +105,14 @@ ruby demo.rb
 Dependencies
 ------------
 
-The service depends on:
+The service depends Angular's own services:
 
 * $location
 * $rootScope
+
+There are no other external dependencies for this service*. The demo uses Ruby, Sinatra and haml to bootstrap it and provide routes for the partials as well as route all other requests to the main javascript app; but the state manager itself has no dependency on this.
+
+*The state manager does depend on at least the `onhashchange` function being implemented by the browser; this is if using it in hash fragment mode. If you use HTML5 mode, then the browser must support the history API.
 
 Copyright & License
 ------------
