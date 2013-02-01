@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("Animals.services", [])
+angular.module("stateManager", [])
 	.factory("stateManager", ["$rootScope", "$location", function factory(rootScope, location) {
 		//define the StateManager object
 		function StateManager() {
