@@ -18,7 +18,7 @@ This follows the philosophy of the web in the sense that a URL should be enough 
 This is where this state manager comes in handy in that it lets each controller in the stack (root > inbox > message > edit) initialise itself according to the state represented by the URL. So the root controller will load the inbox subview/controller pair. The inbox controller will load the message. And the message will load the editor. This can happen asynchronously, i.e. the full stack is never known to any one controller, and each controller just has to worry about itself and its subviews. The subviews worry about themselves, and their subviews worry about themselves, etc. The state manager makes sure that each controller is initialised properly to reflect the current state once it is ready.
 
 Sounds complicated but all you have to do is write an initialiser function in your controller which will get called when the URL (=state) changes. That's it. The state manager takes care of when to call the initialiser, and when to destroy the controller. If as a result of your initialisation function another (sub-)controller gets loaded after the fact, then as long as this sub-controller implements his own initialiser, the state manager will call his initialiser function once he's loaded. This is all asynchronous and each controller just has to worry about itself, resting safe in the knowledge that it can change the controller hierarchy and all will be well (by either adding a new controller, or replacing an old one, through say `ng-include` or by manually inserting a compiled element containing the `ng-controller` directive into the DOM).
-
+ 
 Usage
 ------------
 
