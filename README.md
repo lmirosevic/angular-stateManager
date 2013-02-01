@@ -24,13 +24,13 @@ Usage
 
 This walkthrough uses an "Animals" theme with dogs and cats.
 
-The state manager itself comes as a module inside `stateManager.js` the which you just link to in your main html file:
+The state manager itself comes as a module inside `stateManager.js`, which you just link to in your main html file:
 
 ```html
 <script src='/js/stateManager.js'></script>
 ```
 
-And then add a dependency to in your app (assuming your app is called "Animals"):
+And then add a dependency in your app (assuming your app is called "Animals"):
 
 ```javscript
 angular.module("Animals", ["stateManager"])
