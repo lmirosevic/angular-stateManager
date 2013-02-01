@@ -6,7 +6,7 @@ function RootCtrl($scope, stateManager) {
 	})($scope);
 
 	$scope.setTitle = function(title) {
-		$("title").text(title + " - GBAngularStateManager");
+		document.title = title + " - angular-stateManager by Luka Mirosevic"; 
 	}
 }
 
