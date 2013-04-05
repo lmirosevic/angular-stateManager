@@ -75,7 +75,12 @@ angular.module("Animals", ["stateManager"])
 	});
 ```
 
-Running locally
+Including in your project
+------------
+
+The statemanager itself is just over 100 lines of code, and is implemented in `public/js/stateManager.js`. To use it, simply add `stateManager.js` to your project and link either directly using a `script` tag, or feed it to your build system (e.g. Closure Compiler, Yeoman, etc.).
+
+Running demo locally
 ------------
 
 Make sure you have Ruby and the following gems installs:
