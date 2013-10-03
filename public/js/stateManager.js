@@ -70,7 +70,7 @@ angular.module("stateManager", [])
 
 					//run initialiser
 					initialiserStack[i](getProperPathComponents());
-					rootScope.$apply();
+					$rootScope.$$phase || $rootScope.$apply();
 				}
 			}
 
